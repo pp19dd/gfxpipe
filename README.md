@@ -2,7 +2,7 @@
 
 Purpose of the program is to bypass recompiling firmware and let you prototype your own UI using the standard Adafruit_GFX commands faster.  See that 1 pixel adjustment before your coffee turns cold.
 
-The starter kit offers an interactive editor in JavaScript but how you prototype your graphics is up to you.  Generate the Arduino graphics using whatever programing language you're most comfortable with and when you're done, translate them to C/C++ for your Arduino project.
+The starter kit offers an interactive editor in JavaScript but how you prototype your graphics is up to you.  Generate the Arduino graphics using whatever programming language you're most comfortable with and when you're done, translate them to C/C++ for your Arduino project.
 
 ### Required:
 - Programming language you're comfortable with (for programmatically generating your UI)
