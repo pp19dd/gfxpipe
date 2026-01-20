@@ -2,11 +2,11 @@
 
 Purpose of the program is to bypass recompiling firmware and let you prototype your own UI faster using the standard Adafruit_GFX commands.  See that 1 pixel adjustment before your coffee turns cold.
 
-There are 3 parts to this program:
+### How it works:
 
 1. Arduino firmware (**gfxpipe.ino**): Arduino listens for draw instructions (as defined in Adafruit_GFX) and paints them
-2. Node.js server (**server.js**): compiles and/or transmits encoded draw instructions to Arduino
-3. Interactive editor (**localhost website**): lets you write JavaScript to draw standard Adafruit_GFX in realtime
+2. Node.js server (**server.js**): connects to Arduino via serial port, compiles and/or transmits encoded draw instructions to Arduino using rudimentary flow-control
+3. Interactive editor (**localhost website**): lets you write JavaScript in a web browser IDE (monaco-powered) to draw using standard Adafruit_GFX commands in realtime
 
 The starter kit offers an interactive editor in JavaScript but how you prototype your graphics is up to you.  Generate the Arduino graphics using whatever programming language you're most comfortable with and when you're done, you'll ultimately translate them to C/C++ for your Arduino project.
 
@@ -47,31 +47,19 @@ By default, the node.js server starts in interactive mode where you write JavaSc
 JavaScript instructions are executed in node.js's vm upon keystroke / code change.
 
 #### Helper additions:
-* console.info(("text")) // also log and error
-* rgb (r, g, b) // convert R,G,B to 16-bit 5-6-5 color
-* colorAt ([r, g, b], [r, g, b], current, total) // interpolates color gradient between two colors, at current/total position
-* radians (deg) // converts degrees to radians
-* degrees (rad) // converts radians to degrees
+* **console.info**("text") - Output to the server console, also supports log and error.
+* **rgb** (r, g, b) - Converts R,G,B to 16-bit 5-6-5 color.
+* **colorAt** ([r, g, b], [r, g, b], current, total) - Interpolates a gradient between two colors at current/total position for a smooth gradual transition.
+* **radians** (deg) and degrees (rad) - Trigonometry helpers.
 
 #### Wrapper for Adafruit_GFX functions:
-* **fillScreen** (color)
-* **drawPixel** (x, y, color)
-* **drawLine** (x1, y1, x2, y2, color)
-* **drawRect** (x, y, w, h, color)
-* **fillRect** (x, y, w, h, color)
-* **drawCircle** (x, y, r, color)
-* **fillCircle** (x, y, r, color)
-* **drawEllipse** (x, y, w, h, color)
-* **fillEllipse** (x, y, w, h, color)
-* **drawRoundRect** (x, y, w, h, r, color)
-* **fillRoundRect** (x, y, w, h, r, color)
-* **drawTriangle** (x1, y1, x2, y2, x3, y3, color)
-* **fillTriangle** (x1, y1, x2, y2, x3, y3, color)
 
-#### Combination Helper:
-* setRate (miliseconds) // sets how frequently arduino draws the screen
-* setFont (index, size, color) // picks indexed font (configured in config.h), sets size and color all at once
-* print (x, y, text) // setCursor() and print() all at once
+Supports all standard primitives: `fillScreen`, `drawPixel`, `drawLine`, `drawRect`, `fillRect`, `drawCircle`, `fillCircle`, `drawEllipse`, `fillEllipse`, `drawRoundRect`, `fillRoundRect`, `drawTriangle`, `fillTriangle`.
+
+#### System Commands:
+* **setRate** (miliseconds) - sets how frequently the arduino flushes the canvas to the display.
+* **setFont** (index, size, color) - picks a font (indexed in config.h) and sets properties in one call
+* **print** (x, y, text) - set position and print() in one call
 
 
 
