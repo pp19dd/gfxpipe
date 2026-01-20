@@ -1,0 +1,62 @@
+<!-- =========================================================================
+=                                                                            =
+=                        ▄▀▀                  ▀                              =
+=                ▄▄▄▄  ▄▄█▄▄  ▄   ▄  ▄▄▄▄   ▄▄▄    ▄▄▄▄    ▄▄▄               =
+=               █▀ ▀█    █     █▄█   █▀ ▀█    █    █▀ ▀█  █▀  █              =
+=               █   █    █     ▄█▄   █   █    █    █   █  █▀▀▀▀              =
+=               ▀█▄▀█    █    ▄▀ ▀▄  ██▄█▀  ▄▄█▄▄  ██▄█▀  ▀█▄▄▀              =
+=                ▄  █                █             █                         =
+=                 ▀▀                 ▀             ▀                         =
+=                                                                            =
+=     documentation: https://github.com/pp19dd/gfxpipe/                      =
+=                                                                            =
+=     CC0: not really licensed                                               =
+========================================================================== -->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>gfxpipe ▒ interactive editor</title>
+    <meta name="robots" content="noindex" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="editor.css" />
+</head>
+<body class="main-layout help-level-1" id="help-instructions">
+    <header class="top">
+        <div class="left">
+            <pre class="logo"><a href="https://github.com/pp19dd/gfxpipe" target="_blank"></a></pre>
+        </div>
+        <div class="right command-grid" id="command-grid">
+            <div class="instruction note">available:</div>
+        </div>
+    </header>
+
+    <section class="under-top">
+        <div class="logo-small">gfxpipe</div>
+        <span id="filename" spellcheck="false" contentEditable="plaintext-only">untitled-01.txt</span>
+        <button onclick="new_file()">new</button>
+        <button class="unfinished">load</button>
+        <button class="unfinished">save</button>
+        <button id="download" onclick="download_code()">download drawing.txt</button>
+        <div class="right">
+            <button onclick="open_command_palette()">F1 Command Palette</button>
+            <button onclick="toggle_help()">Ctrl+F1 Expand Help</button><span id="help-level-indicator">H1</span>
+        </div>
+    </section>
+
+    <section class="middle">
+        <div id="editorContainer"></div>
+    </section>
+
+    <section class="bottom">
+        <span class="unfinished" id="status">Status: Ready</span>
+        <span class="unfinished">TODO: Port: COM3</span>
+        <label><input type="checkbox" id="autoExec" checked> Auto-Execute on code change</label>
+        <span style="margin-left: 20px;">Ctrl+Enter to execute</span>
+    </section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0/min/vs/loader.min.js"></script>
+
+<script src="editor.js"></script>
+</body>
+</html>

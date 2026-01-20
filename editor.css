@@ -1,0 +1,141 @@
+/* ---------------------------------------------------------------------------
+//     .  _|_           ▄▀▀                  ▀                      .   o   //
+//   .     |    ▄▄▄▄  ▄▄█▄▄  ▄   ▄  ▄▄▄▄   ▄▄▄    ▄▄▄▄    ▄▄▄          / \  //
+//             █▀ ▀█    █     █▄█   █▀ ▀█    █    █▀ ▀█  █▀  █   .     \ /  //
+//    o    :   █   █    █     ▄█▄   █   █    █    █   █  █▀▀▀▀          o   //
+//   / \       ▀█▄▀█    █    ▄▀ ▀▄  ██▄█▀  ▄▄█▄▄  ██▄█▀  ▀█▄▄▀              //
+//   \ /  .     ▄  █                █             █               _|_     . //
+//    o          ▀▀        `        ▀             ▀       .        |        //
+// ---------------------------------------------------------------------------
+// LICENSE: CC0, so not really licensed
+// ---------------------------------------------------------------------------
+// See docs at https://github.com/pp19dd/gfxpipe/
+// ------------------------------------------------------------------------ */
+
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    font-family: sans-serif;
+    background: #1e1e1e; color: white;
+}
+
+.main-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* section 1 */
+.top {
+    display: flex;
+    border-bottom: 5px solid #444;
+    padding: 10px;
+    background: #252526;
+}
+
+.left {
+    margin-right: 2em;
+}
+
+pre a {
+    color: silver;
+    text-decoration: none;
+}
+pre a:hover {
+    color: white;
+}
+
+.command-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+    font-size: 0.8rem;
+    color: #aaa;
+}
+
+.note { color: #666; text-decoration: underline; }
+.addon { color: #007acc; font-weight: bold }
+.addon .parameters { color: #555 }
+.parameters { color: #555}
+
+.description { font-weight: normal; color: gray }
+
+.logo-small { display: none; letter-spacing: 3px; margin-right: 1em  }
+.help-level-0 .top { display: none; }
+.help-level-0 .logo-small { display: block }
+
+.help-level-0 pre { font-size: 4px }
+.help-level-0 .instruction, .help-level-0 .description, .help-level-0 .parameters { display: none }
+.help-level-1 .description, .help-level-1 .parameters { display: none }
+.help-level-2 .description { display: none }
+/* .help-level-3 .description { display: none } */
+
+#help-level-indicator { color: #007acc; margin-left: 1em }
+
+/* section 2 */
+.under-top {
+    line-height: 2em;
+    font-size: 0.9rem;
+    background: #252526;
+    padding: 8px 15px;
+    border-bottom: 1px solid #3c3c3c;
+    display: flex;
+    gap: 8px;    
+}
+
+.under-top button {
+    background: #3c3c3c;
+    color: #cccccc;
+    border: 1px solid #454545;
+    padding: 4px 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.2s;
+}
+
+.under-top button:hover {
+    background: #4d4d4d;
+    color: #ffffff;
+}
+
+.under-top button:active {
+    background: #0e639c;
+    border-color: #1177bb;
+}
+
+.right { margin-left: auto;}
+
+#filename { cursor: pointer; color: silver; padding-right: 1em }
+#filename:hover { color: white; }
+
+/* section 3 */
+.middle {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+#editorContainer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+/* section 4 */
+.bottom {
+    height: 2em;
+    line-height: 2em;
+    padding: 0 10px;
+    background: #007acc;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.unfinished { text-decoration: line-through; color: crimson !important; font-style: oblique !important }
