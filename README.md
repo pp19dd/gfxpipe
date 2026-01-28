@@ -28,6 +28,7 @@ The starter kit offers an interactive editor in JavaScript but how you prototype
   - Open serial monitor and try sending some raw commands:
     - C,255
 - Close serial monitor to make the COM port available
+- Run npm install
 - Run node server.js [COM PORT] [BAUD RATE] [FILE.txt]
 - Pull up http://localhost:8080/
 - Type to execute JavaScript code and to stream graphics commands interactively
