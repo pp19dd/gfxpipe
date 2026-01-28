@@ -7,13 +7,16 @@
 //   \ /  .     ▄  █                █             █               _|_     . //
 //    o          ▀▀        `        ▀             ▀       .        |        //
 // ---------------------------------------------------------------------------
-// LICENSE: CC0, so not really licensed
+// LICENSE: CC0 1.0 Universal                                               //
 // ---------------------------------------------------------------------------
-// See docs at https://github.com/pp19dd/gfxpipe/
+// See docs at https://github.com/pp19dd/gfxpipe/                           //
 // ---------------------------------------------------------------------------
 
 // toggles detail level: < less | more >
-let help_level = 1;
+let help_level = 2;
+let editor;
+let debounceTimer;
+const div_filename = document.querySelector("#filename");
 
 function apply_help_level() {
     const div_help = document.querySelector("#help-instructions");
@@ -25,7 +28,12 @@ function apply_help_level() {
     editor.layout();
     editor.focus();
 
-    document.querySelector("#help-level-indicator").innerHTML = "H" + help_level;
+    document.querySelectorAll("#help-level-indicator circle").forEach( (circle, index) => {
+        circle.classList.remove("filled" );
+        if( (index + 1) <= help_level ) {
+            circle.classList.add("filled" );
+        }
+    });
 }
 
 function toggle_help() {
@@ -97,6 +105,7 @@ function setup_help() {
         logo_trimmed += logo[i].substring(16,77).trimEnd() + "\n";
     }
     document.querySelector("pre a").innerHTML = logo_trimmed;
+    document.querySelector("pre.logo-small a").innerHTML = logo_trimmed;
 
     // i like a command overview so there's no guesswork
     const div_grid = document.querySelector("#command-grid");
@@ -127,10 +136,6 @@ function setup_help() {
         add_instruction( help[i] );
     }
 }
-
-let editor;
-let debounceTimer;
-setup_help();
 
 require.config({
     paths: {
@@ -191,8 +196,41 @@ for( let a = 0; a < run; a += 15) {
         toggle_help();
     });
 
+    initialize_routines();
+
     editor.focus();
 });
+
+function setup_file_naming_events() {
+
+    // cleanup 1/2
+    div_filename.addEventListener("keydown", (e) => {
+        if( e.key === "Enter" ) {
+            e.preventDefault();
+            div_filename.blur();
+        }
+    });
+
+    // cleanup 2/2
+    div_filename.addEventListener("input", () => {
+        if( div_filename.innerText.includes("\n") ) {
+            div_filename.innerText = div_filename.innerText.replace(/\r?\n|\r/g, "");
+        }
+    });
+
+    div_filename.addEventListener("blur", () => {
+        update_download_filename();
+    });
+
+}
+
+function initialize_routines() {
+    setup_help();
+    load_code_setup();
+    update_download_filename();
+    apply_help_level();
+    setup_file_naming_events();
+}
 
 window.addEventListener("keydown", (e) => {
     if( e.key === "F1" ) {
@@ -242,9 +280,18 @@ async function sendCode() {
             severity: monaco.MarkerSeverity.Error
         }]);
 
+        document.querySelector(".bottom-part-2").classList.add("funny");
         document.querySelector("#status").innerHTML = `Error on line ${err.line}`;
     } else {
+        const status = await response.json();
+        
+        document.querySelector(".bottom-part-2").classList.remove("funny");
         document.querySelector("#status").innerHTML = "";
+        document.querySelector("#connection_status").innerHTML = 
+            `Port: ${status.config.port} Baud: ${status.config.baud}`;
+        
+        console.info( "status", status );
+
     }
 }
 
@@ -254,13 +301,13 @@ function new_file() {
     }
 }
 
-function sanitizeFilename(name) {
+function sanitize_filename(name) {
     // Remove: \ / : * ? " < > | and null bytes
     // Also trim leading/trailing spaces and dots
     return name.replace(/[\\/:*?"<>|]/g, "").trim();
 }
 
-function download_code() {
+function save_code() {
     const code = editor.getValue();
     const blob = new Blob([code], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
@@ -277,33 +324,47 @@ function download_code() {
     }, 0);
 }
 
-const filenameSpan = document.querySelector("#filename");
+function load_code_setup() {
+    const input = document.getElementById("file_input");
 
-// cleanup 1/2
-filenameSpan.addEventListener("keydown", (e) => {
-    if( e.key === "Enter" ) {
-        e.preventDefault();
-        filenameSpan.blur();
-    }
-});
+    input.onchange = () => {
+        const file = input.files[0];
+        
+        div_filename.innerHTML = file.name;
+        update_download_filename();
 
-// cleanup 2/2
-filenameSpan.addEventListener("input", () => {
-    if( filenameSpan.innerText.includes("\n") ) {
-        filenameSpan.innerText = filenameSpan.innerText.replace(/\r?\n|\r/g, "");
-    }
-});
+        if( !file ) {
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            editor.setValue(e.target.result);
+        };
+        reader.readAsText(file);
+
+        // reset so selecting the same file twice still triggers change
+        input.value = "";
+    };
+}
+
 
 // blur = contentEditable change event?
-filenameSpan.addEventListener("blur", () => {
-    let currentName = filenameSpan.innerText;
-    let cleanName = sanitizeFilename(currentName);
+function update_download_filename() {
+    let currentName = div_filename.innerText;
+    let clean_name = sanitize_filename(currentName);
     
     // default filename
-    if( cleanName === "" ) {
-        cleanName = "untitled-01.txt";
+    if( clean_name === "" ) {
+        clean_name = "untitled-01.txt";
     }
     
-    filenameSpan.innerText = cleanName;
-    document.querySelector("#download").innerHTML = `download ${cleanName}`;
-});
+    // enforce that it ends with .txt
+    const suffix = clean_name.slice(-4).toLowerCase();
+    if( suffix !== ".txt" ) {
+        clean_name += ".txt";
+    }
+
+    div_filename.innerText = clean_name;
+    document.querySelector("#download").innerHTML = `download ${clean_name}`;
+}

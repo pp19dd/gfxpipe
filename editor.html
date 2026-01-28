@@ -10,7 +10,7 @@
 =                                                                            =
 =     documentation: https://github.com/pp19dd/gfxpipe/                      =
 =                                                                            =
-=     CC0: not really licensed                                               =
+=     LICENSE: CC0 1.0 Universal                                             =
 ========================================================================== -->
 <!doctype html>
 <html lang="en">
@@ -32,15 +32,20 @@
     </header>
 
     <section class="under-top">
-        <div class="logo-small">gfxpipe</div>
-        <span id="filename" spellcheck="false" contentEditable="plaintext-only">untitled-01.txt</span>
+        <pre class="logo-small"><a href="https://github.com/pp19dd/gfxpipe" target="_blank"></a></pre>
+        <div id="filename" spellcheck="false" contentEditable="plaintext-only">untitled-01.txt</div>
         <button onclick="new_file()">new</button>
-        <button class="unfinished">load</button>
-        <button class="unfinished">save</button>
-        <button id="download" onclick="download_code()">download drawing.txt</button>
-        <div class="right">
+        <button onclick="document.querySelector('#file_input').click()">load</button>
+        <input type="file" id="file_input" accept=".txt" />
+        <button id="download" onclick="save_code()">download drawing.txt</button>
+        <div class="right right-buttons">
             <button onclick="open_command_palette()">F1 Command Palette</button>
-            <button onclick="toggle_help()">Ctrl+F1 Expand Help</button><span id="help-level-indicator">H1</span>
+            <button onclick="toggle_help()">Ctrl+F1 Expand Help</button>
+            <svg id="help-level-indicator" width="16" height="32">
+                <circle cx="8" cy="6" r="3" class="filled"></circle>
+                <circle cx="8" cy="16" r="3"></circle>
+                <circle cx="8" cy="26" r="3"></circle>
+            </svg>
         </div>
     </section>
 
@@ -49,10 +54,10 @@
     </section>
 
     <section class="bottom">
-        <span class="unfinished" id="status">Status: Ready</span>
-        <span class="unfinished">TODO: Port: COM3</span>
-        <label><input type="checkbox" id="autoExec" checked> Auto-Execute on code change</label>
-        <span style="margin-left: 20px;">Ctrl+Enter to execute</span>
+        <div class="bottom-part bottom-part-1"><span id="connection_status"></span></div>
+        <div class="bottom-part bottom-part-2"><span id="status"></span></div>
+        <div class="bottom-part bottom-part-3"><label><input type="checkbox" id="autoExec" checked> Auto-Execute on code change</label></div>
+        <div class="bottom-part bottom-part-4"><span style="margin-left: 20px;">Ctrl+Enter to execute</span></div>
     </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0/min/vs/loader.min.js"></script>

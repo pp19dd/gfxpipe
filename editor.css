@@ -38,13 +38,8 @@ html, body {
     margin-right: 2em;
 }
 
-pre a {
-    color: silver;
-    text-decoration: none;
-}
-pre a:hover {
-    color: white;
-}
+pre a { color: silver; text-decoration: none; }
+pre a:hover { color: white; }
 
 .command-grid {
     flex: 1;
@@ -62,17 +57,22 @@ pre a:hover {
 
 .description { font-weight: normal; color: gray }
 
-.logo-small { display: none; letter-spacing: 3px; margin-right: 1em  }
+.logo-small { display: none; }
 .help-level-0 .top { display: none; }
-.help-level-0 .logo-small { display: block }
+.help-level-0 .logo-small { display: block; margin-right: 4em; }
 
-.help-level-0 pre { font-size: 4px }
-.help-level-0 .instruction, .help-level-0 .description, .help-level-0 .parameters { display: none }
-.help-level-1 .description, .help-level-1 .parameters { display: none }
-.help-level-2 .description { display: none }
-/* .help-level-3 .description { display: none } */
 
-#help-level-indicator { color: #007acc; margin-left: 1em }
+.instruction, .description, .parameters {
+    opacity: 1; max-height: 500px;
+    transition: opacity 0.5s, max-height 1s;
+}
+.help-level-0 pre { font-size: 4px; line-height: 4px }
+.help-level-0 .instruction, .help-level-0 .description, .help-level-0 .parameters { max-height: 0px; opacity: 0; }
+.help-level-1 .description, .help-level-1 .parameters { max-height: 0px; opacity: 0;  }
+.help-level-2 .description { max-height: 0px; opacity: 0; }
+
+#help-level-indicator circle { stroke: #007acc; stroke-width:1px }
+#help-level-indicator circle.filled { fill: #007acc; }
 
 /* section 2 */
 .under-top {
@@ -82,7 +82,8 @@ pre a:hover {
     padding: 8px 15px;
     border-bottom: 1px solid #3c3c3c;
     display: flex;
-    gap: 8px;    
+    gap: 8px;
+    align-items: center;
 }
 
 .under-top button {
@@ -107,7 +108,11 @@ pre a:hover {
     border-color: #1177bb;
 }
 
-.right { margin-left: auto;}
+#file_input { display: none }
+
+.right { margin-left: auto; }
+.right-buttons { display: flex; align-items: center; gap: 8px }
+
 
 #filename { cursor: pointer; color: silver; padding-right: 1em }
 #filename:hover { color: white; }
@@ -137,5 +142,10 @@ pre a:hover {
     display: flex;
     justify-content: space-between;
 }
+
+ 
+.bottom-part { padding-left: 1em; padding-right: 1em; }
+.funny { background-color: crimson; }
+.bottom-part-3 { margin-left: auto;}
 
 .unfinished { text-decoration: line-through; color: crimson !important; font-style: oblique !important }

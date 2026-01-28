@@ -7,7 +7,7 @@
 //   \ /  .     ▄  █                █             █               _|_     . //
 //    o          ▀▀        `        ▀             ▀       .        |        //
 // ---------------------------------------------------------------------------
-// LICENSE: CC0, so not really licensed
+// LICENSE: CC0 1.0 Universal
 // ---------------------------------------------------------------------------
 // See docs at https://github.com/pp19dd/gfxpipe/
 // ---------------------------------------------------------------------------
@@ -50,6 +50,7 @@ let count_sent = 0;
 let bytes_sent = 0;
 let ack_check = false;
 let needs_newline = false;
+let status = {};
 
 get_self_header_lines(0, 9).forEach( (line) => {
     console.log("\x1b[34m" + line.substring(0) + "\x1b[0m");
@@ -92,6 +93,7 @@ if( config.file !== null ) {
     }
 }
 
+status.config = config;
 let config_hint = "server starting with this config:\n";
 for( k in config ) {
     config_hint += `--${k}=${config[k]}\n`;
@@ -113,7 +115,7 @@ displayLog( "gfxpipe", "CTRL + C to exit\n");
 
 function send_file(res, content_type, path) {
     res.writeHead(200, {
-        "Content-Type": content_type,
+        "Content-Type": `${content_type}; charset=utf-8`,
         "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
         "Pragma": "no-cache",
         "Expires": "0"
@@ -146,7 +148,7 @@ const server = http.createServer((req, res) => {
                 res.end( JSON.stringify(error) );
             } else {
                 res.writeHead(200);
-                res.end( "OK" );
+                res.end( JSON.stringify(status) );
             }
         });
     } else {
@@ -362,6 +364,7 @@ function run_user_code(code) {
     };
 
     try {
+
         // 2. run user's code in a sandbox
         vm.createContext( sandbox );
         vm.runInContext( code, sandbox, {
