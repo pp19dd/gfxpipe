@@ -314,7 +314,7 @@ function save_code() {
     const a = document.createElement('a');
     
     a.href = url;
-    a.download = 'drawing1.txt';
+    a.download = div_filename.innerHTML.trim();
     document.body.appendChild(a);
     a.click();
     
