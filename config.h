@@ -58,7 +58,7 @@
 
 
 // ---------------------------------------------------------------------------
-// 2. include any fonts you'll be using
+// 3. include any fonts you'll be using
 // ---------------------------------------------------------------------------
 #include <Fonts/FreeSansBold24pt7b.h>
 
