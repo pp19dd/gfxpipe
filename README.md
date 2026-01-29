@@ -76,7 +76,7 @@ If everything is working at this point you can just connect the Arduino, fire up
 * `L,0,0,120,120,255` will draw a line from 0,0 to 120,120 in blue.
 * `W,1,32,Hello` will print text at 1,32.
 
-Full of list of encoded draw commands is located at the bottom of this README.
+Full list of encoded draw commands is located at the bottom of this README.
 
 
 ## 2 - server.js
@@ -98,7 +98,11 @@ This is available to you in case you want to use another programming language to
 
 `node server.js --port=COM1 --baud=115200 --file=drawing.txt`
 
-Full of list of encoded draw commands is located at the bottom of this README.
+Alternatively, you can use this mode to stream data from a Python script, system monitor or a few lines of bash.
+
+`echo "L,0,0,10,10,255" >> drawing.txt`
+
+Full list of encoded draw commands is located at the bottom of this README.
 
 ## 3 - Interactive Editor
 
