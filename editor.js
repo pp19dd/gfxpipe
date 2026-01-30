@@ -226,7 +226,8 @@ function store_settings() {
         JSON.stringify({
             "help_level": help_level,
             "file_num": file_num,
-            "sticky_code": sticky_code
+            "filename": div_filename.innerHTML,
+            "sticky_code": sticky_code,
         })
     );
 }
@@ -235,9 +236,12 @@ function load_settings() {
     const settings_string = localStorage.getItem("gfxpipe-settings");
     if( settings_string === null ) return;
 
+    
     const settings = JSON.parse(settings_string);
+
     if( typeof settings["help_level"] !== "undefined") help_level = settings["help_level"];
     if( typeof settings["file_num"] !== "undefined") file_num = settings["file_num"];
+    if( typeof settings["filename"] !== "undefined" ) div_filename.innerHTML = settings["filename"];
     if( typeof settings["sticky_code"] !== "undefined" ) sticky_code = settings["sticky_code"];
 }
 
@@ -309,8 +313,6 @@ async function sendCode() {
         document.querySelector("#connection_status").innerHTML = 
             `Port: ${status.config.port} Baud: ${status.config.baud}`;
         
-        console.info( "status", status );
-
     }
 }
 
@@ -318,9 +320,9 @@ function new_file() {
     if( confirm("Clear current code?" )) {
         editor.setValue(new_file_template);
         file_num++;
-        store_settings();
-        document.querySelector("#filename").innerHTML = "";
+        div_filename.innerHTML = "";
         update_download_filename();
+        store_settings();
     }
 }
 
@@ -355,6 +357,7 @@ function load_code_setup() {
         
         div_filename.innerHTML = file.name;
         update_download_filename();
+        store_settings();
 
         if( !file ) {
             return;
@@ -363,6 +366,7 @@ function load_code_setup() {
         const reader = new FileReader();
         reader.onload = (e) => {
             editor.setValue(e.target.result);
+            store_settings();
         };
         reader.readAsText(file);
 
