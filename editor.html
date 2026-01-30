@@ -26,9 +26,7 @@
         <div class="left">
             <pre class="logo"><a href="https://github.com/pp19dd/gfxpipe" target="_blank"></a></pre>
         </div>
-        <div class="right command-grid" id="command-grid">
-            <div class="instruction note">available:</div>
-        </div>
+        <div class="right command-grid" id="command-grid"></div>
     </header>
 
     <section class="under-top">
@@ -37,10 +35,10 @@
         <button onclick="new_file()">new</button>
         <button onclick="document.querySelector('#file_input').click()">load</button>
         <input type="file" id="file_input" accept=".txt" />
-        <button id="download" onclick="save_code()">download drawing.txt</button>
+        <button id="download" onclick="save_code()">save drawing.txt</button>
         <div class="right right-buttons">
-            <button onclick="open_command_palette()">F1 Command Palette</button>
-            <button onclick="toggle_help()">Ctrl+F1 Expand Help</button>
+            <button onclick="open_command_palette()"><span class="shorter">F1 CMD</span><span class="longer">F1 Command Palette</span></button>
+            <button onclick="toggle_help()"><span class="shorter">CTRL+F1 HLP</span><span class="longer">Ctrl+F1 Expand Help</span></button>
             <svg id="help-level-indicator" width="16" height="32">
                 <circle cx="8" cy="6" r="3" class="filled"></circle>
                 <circle cx="8" cy="16" r="3"></circle>

@@ -96,6 +96,7 @@ pre a:hover { color: white; }
     cursor: pointer;
     border-radius: 2px;
     transition: background 0.2s;
+    white-space: nowrap;
 }
 
 .under-top button:hover {
@@ -149,3 +150,10 @@ pre a:hover { color: white; }
 .bottom-part-3 { margin-left: auto;}
 
 .unfinished { text-decoration: line-through; color: crimson !important; font-style: oblique !important }
+
+.longer { display: none }
+
+@media screen and (min-width: 850px) {
+    .shorter { display: none }
+    .longer { display: block }
+}

@@ -393,5 +393,5 @@ function update_download_filename() {
     }
 
     div_filename.innerText = clean_name;
-    document.querySelector("#download").innerHTML = `download ${clean_name}`;
+    document.querySelector("#download").innerHTML = `save ${clean_name}`;
 }
