@@ -12,11 +12,19 @@
 // See docs at https://github.com/pp19dd/gfxpipe/                           //
 // ---------------------------------------------------------------------------
 
-// toggles detail level: < less | more >
-let help_level = 2;
+let help_level = 2;     // toggles detail level: < less | more >
+let file_num = 0;       // untitled_33.txt
+
 let editor;
 let debounceTimer;
 const div_filename = document.querySelector("#filename");
+const new_file_template = `// new gfxpipe script
+fillScreen(0);
+
+`;
+// code as you type, in case of a browser refresh
+let sticky_code = new_file_template;
+
 
 function apply_help_level() {
     const div_help = document.querySelector("#help-instructions");
@@ -39,6 +47,7 @@ function apply_help_level() {
 function toggle_help() {
     help_level++;
     if( help_level > 3 ) help_level = 0;
+    store_settings();
     apply_help_level();
 }
 
@@ -145,21 +154,7 @@ require.config({
 
 require(['vs/editor/editor.main'], function() {
     editor = monaco.editor.create(document.querySelector("#editorContainer"), {
-        value:
-`
-// this program executes on the node.js server as you type
-fillScreen(0);
-let d = 100;
-
-run = 360;
-for( let a = 0; a < run; a += 15) {
-    x = 120 + (d * Math.sin( radians(-a) ));
-    y = 120 + (d * Math.cos( radians(-a) ));
-    c = colorAt([40,0,0], [0, 64, 255], a, run);
-    fillCircle(x, y, 10, c);
-}
-
-`,
+        // value: new_file_template,
         language: 'javascript',
         theme: 'vs-dark',
         automaticLayout: true,
@@ -172,6 +167,8 @@ for( let a = 0; a < run; a += 15) {
     });
     
     editor.onDidChangeModelContent(() => {
+        sticky_code = editor.getValue();
+        store_settings();
         const isAuto = document.getElementById('autoExec').checked;
         if( isAuto ) {
             clearTimeout(debounceTimer);
@@ -224,9 +221,31 @@ function setup_file_naming_events() {
 
 }
 
+function store_settings() {
+    localStorage.setItem("gfxpipe-settings",
+        JSON.stringify({
+            "help_level": help_level,
+            "file_num": file_num,
+            "sticky_code": sticky_code
+        })
+    );
+}
+
+function load_settings() {
+    const settings_string = localStorage.getItem("gfxpipe-settings");
+    if( settings_string === null ) return;
+
+    const settings = JSON.parse(settings_string);
+    if( typeof settings["help_level"] !== "undefined") help_level = settings["help_level"];
+    if( typeof settings["file_num"] !== "undefined") file_num = settings["file_num"];
+    if( typeof settings["sticky_code"] !== "undefined" ) sticky_code = settings["sticky_code"];
+}
+
 function initialize_routines() {
     setup_help();
     load_code_setup();
+    load_settings();
+    editor.setValue(sticky_code);
     update_download_filename();
     apply_help_level();
     setup_file_naming_events();
@@ -297,7 +316,11 @@ async function sendCode() {
 
 function new_file() {
     if( confirm("Clear current code?" )) {
-        editor.setValue("// new gfxpipe script\nfillScreen(0);\n");
+        editor.setValue(new_file_template);
+        file_num++;
+        store_settings();
+        document.querySelector("#filename").innerHTML = "";
+        update_download_filename();
     }
 }
 
@@ -356,7 +379,7 @@ function update_download_filename() {
     
     // default filename
     if( clean_name === "" ) {
-        clean_name = "untitled-01.txt";
+        clean_name = "untitled-" + file_num.toString().padStart(2, "0") + ".txt";
     }
     
     // enforce that it ends with .txt
